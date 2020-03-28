@@ -66,7 +66,7 @@ import org.springframework.util.ReflectionUtils;
  * annotations out of the box, as init annotation and destroy annotation, respectively.
  * Furthermore, it also supports the {@link javax.annotation.Resource} annotation
  * for annotation-driven injection of named beans.
- *
+ *	处理初始化和结束时候的回调方法
  * @author Juergen Hoeller
  * @since 2.5
  * @see #setInitAnnotationType

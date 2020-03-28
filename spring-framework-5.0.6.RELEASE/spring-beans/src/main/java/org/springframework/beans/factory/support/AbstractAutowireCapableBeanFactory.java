@@ -420,7 +420,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object result = existingBean;
 		for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
 			Object current = beanProcessor.postProcessBeforeInitialization(result, beanName);
-			if (current == null) {
+			if (current == null) {//如果返回为null，直接跳过后面的操作
 				return result;
 			}
 			result = current;
@@ -435,7 +435,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object result = existingBean;
 		for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
 			Object current = beanProcessor.postProcessAfterInitialization(result, beanName);
-			if (current == null) {
+			if (current == null) {//如果返回为null，直接跳过操作
 				return result;
 			}
 			result = current;
@@ -1737,12 +1737,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}, getAccessControlContext());
 		}
 		else {
+			// 一些特殊的Aware注入 beanName, ClassLoader, BeanFactory
 			invokeAwareMethods(beanName, bean);
 		}
 
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
-			//第七次后置处理器，初始化之前执行
+			//第七次后置处理器，初始化之前执行, 包括触发applicationContextAware，
+			// 还有@PostConstruct在InitDestroyAnnotationBeanPostProcessor中被处理
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 
@@ -1756,7 +1758,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					beanName, "Invocation of init method failed", ex);
 		}
 		if (mbd == null || !mbd.isSynthetic()) {
-			//第八次后置处理器 aop
+			//第八次后置处理器 实例化之后，可以对属性做一些操作
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 
@@ -1796,6 +1798,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			throws Throwable {
 
 		boolean isInitializingBean = (bean instanceof InitializingBean);
+		// 1。 InitializingBean 接口
 		if (isInitializingBean && (mbd == null || !mbd.isExternallyManagedInitMethod("afterPropertiesSet"))) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Invoking afterPropertiesSet() on bean with name '" + beanName + "'");
@@ -1815,7 +1818,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				((InitializingBean) bean).afterPropertiesSet();
 			}
 		}
-
+		// beanDefinition中的init配置的方法
 		if (mbd != null && bean.getClass() != NullBean.class) {
 			String initMethodName = mbd.getInitMethodName();
 			if (StringUtils.hasLength(initMethodName) &&
