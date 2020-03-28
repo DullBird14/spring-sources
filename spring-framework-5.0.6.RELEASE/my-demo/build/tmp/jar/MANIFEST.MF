@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Implementation-Title: my-demo
+Automatic-Module-Name: my.demo
+Implementation-Version: 5.0.6.RELEASE
+Created-By: 1.8.0_171 (Oracle Corporation)
+
