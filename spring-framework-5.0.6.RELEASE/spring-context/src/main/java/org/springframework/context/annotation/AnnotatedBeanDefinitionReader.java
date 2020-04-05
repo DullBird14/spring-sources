@@ -46,13 +46,21 @@ import org.springframework.util.Assert;
  * @see AnnotationConfigApplicationContext#register
  */
 public class AnnotatedBeanDefinitionReader {
-
+	/**
+	 * bean注册中心，
+	 */
 	private final BeanDefinitionRegistry registry;
-
+	/**
+	 * bean名字的生成器
+	 */
 	private BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
-
+	/**
+	 * bean生命周期的选择
+	 */
 	private ScopeMetadataResolver scopeMetadataResolver = new AnnotationScopeMetadataResolver();
-
+	/**
+	 * 条件评估器，确定是否要加载这个bean 和{@link Condition} 有关系
+	 */
 	private ConditionEvaluator conditionEvaluator;
 
 
@@ -129,6 +137,7 @@ public class AnnotatedBeanDefinitionReader {
 	 * annotated class more than once has no additional effect.
 	 * @param annotatedClasses one or more annotated classes,
 	 * e.g. {@link Configuration @Configuration} classes
+	 * 注册一个类，
 	 */
 	public void register(Class<?>... annotatedClasses) {
 		for (Class<?> annotatedClass : annotatedClasses) {
@@ -212,17 +221,21 @@ public class AnnotatedBeanDefinitionReader {
 	 */
 	<T> void doRegisterBean(Class<T> annotatedClass, @Nullable Supplier<T> instanceSupplier, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, BeanDefinitionCustomizer... definitionCustomizers) {
-
+		//1. AnnotatedGenericBeanDefinition 扩展了 GenericBeanDefinition ，创建的时候扫描自己下面的元信息
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
+		//2. 通过条件评估器判断是否需要跳过。
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
 			return;
 		}
 
 		abd.setInstanceSupplier(instanceSupplier);
+		// 3.的确定scope ，如果配置了，就取配置的。如果没有。默认是单例，不需要代理
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
+		// 设置到 beanDefinition
 		abd.setScope(scopeMetadata.getScopeName());
+		// 生成名字
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
-
+		// 处理一些公共的注解
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
@@ -237,12 +250,16 @@ public class AnnotatedBeanDefinitionReader {
 				}
 			}
 		}
+		// 查看是否有自定义处理的方法。提供了一种处理beanDefinition的办法
 		for (BeanDefinitionCustomizer customizer : definitionCustomizers) {
 			customizer.customize(abd);
 		}
-
+		// 封装成hodler
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
+		//4. 根据判断自己是否需要代理，一般单利不需要代理
+		// todo 什么需要代理？构造了一个新的definitionHolder包含之前的信息，但是描述了需要代理
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+		//5. 把当前的 definition注册
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
 	}
 
@@ -250,6 +267,8 @@ public class AnnotatedBeanDefinitionReader {
 	/**
 	 * Get the Environment from the given registry if possible, otherwise return a new
 	 * StandardEnvironment.
+	 * 判断 registry 是否不是实现了 EnvironmentCapable
+	 * 用于后面的condition 有对环境的判断
 	 */
 	private static Environment getOrCreateEnvironment(BeanDefinitionRegistry registry) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");

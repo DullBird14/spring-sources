@@ -237,6 +237,11 @@ public class AnnotationConfigUtils {
 		processCommonDefinitionAnnotations(abd, abd.getMetadata());
 	}
 
+	/**
+	 * 判断是否存在这些注解，存在就设置beanDenifition
+	 * @param abd
+	 * @param metadata
+	 */
 	static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, AnnotatedTypeMetadata metadata) {
 		AnnotationAttributes lazy = attributesFor(metadata, Lazy.class);
 		if (lazy != null) {
@@ -270,14 +275,24 @@ public class AnnotationConfigUtils {
 		}
 	}
 
+	/**
+	 *
+	 * @param metadata
+	 * @param definition
+	 * @param registry
+	 * @return
+	 */
 	static BeanDefinitionHolder applyScopedProxyMode(
 			ScopeMetadata metadata, BeanDefinitionHolder definition, BeanDefinitionRegistry registry) {
 
 		ScopedProxyMode scopedProxyMode = metadata.getScopedProxyMode();
+		// 不需要代理
 		if (scopedProxyMode.equals(ScopedProxyMode.NO)) {
 			return definition;
 		}
+		// 如果是 TARGET_CLASS 就是cglib 否则是 java 代理
 		boolean proxyTargetClass = scopedProxyMode.equals(ScopedProxyMode.TARGET_CLASS);
+		// 创建一个代理的beanDefinitionHolder
 		return ScopedProxyCreator.createScopedProxy(definition, registry, proxyTargetClass);
 	}
 

@@ -45,23 +45,28 @@ public abstract class ScopedProxyUtils {
 	 * @param registry the bean definition registry
 	 * @param proxyTargetClass whether to create a target class proxy
 	 * @return the scoped proxy definition
+	 * 根据原来的beanDefinition 创建一个 RootBeanDefinition(ScopedProxyFactoryBean.class)
+	 * 将原来的信息隐藏在里面
 	 */
 	public static BeanDefinitionHolder createScopedProxy(BeanDefinitionHolder definition,
 			BeanDefinitionRegistry registry, boolean proxyTargetClass) {
-
+		// 获取原始的信息
 		String originalBeanName = definition.getBeanName();
 		BeanDefinition targetDefinition = definition.getBeanDefinition();
 		String targetBeanName = getTargetBeanName(originalBeanName);
 
 		// Create a scoped proxy definition for the original bean name,
 		// "hiding" the target bean in an internal target definition.
+		// 创建一个 proxy definition 主要是 ScopedProxyFactoryBean类
 		RootBeanDefinition proxyDefinition = new RootBeanDefinition(ScopedProxyFactoryBean.class);
+		// 拷贝原来的 definition 到其中
 		proxyDefinition.setDecoratedDefinition(new BeanDefinitionHolder(targetDefinition, targetBeanName));
 		proxyDefinition.setOriginatingBeanDefinition(targetDefinition);
 		proxyDefinition.setSource(definition.getSource());
 		proxyDefinition.setRole(targetDefinition.getRole());
 
 		proxyDefinition.getPropertyValues().add("targetBeanName", targetBeanName);
+		// 根据不同代理方式，设置属性
 		if (proxyTargetClass) {
 			targetDefinition.setAttribute(AutoProxyUtils.PRESERVE_TARGET_CLASS_ATTRIBUTE, Boolean.TRUE);
 			// ScopedProxyFactoryBean's "proxyTargetClass" default is TRUE, so we don't need to set it explicitly here.
@@ -82,10 +87,12 @@ public abstract class ScopedProxyUtils {
 		targetDefinition.setPrimary(false);
 
 		// Register the target bean as separate bean in the factory.
+		// 把原始的beanDefinition注册 但是名字修改了
 		registry.registerBeanDefinition(targetBeanName, targetDefinition);
 
 		// Return the scoped proxy definition as primary bean definition
 		// (potentially an inner bean).
+		// 返回一个代理，但是包含原始信息在内部
 		return new BeanDefinitionHolder(proxyDefinition, originalBeanName, definition.getAliases());
 	}
 

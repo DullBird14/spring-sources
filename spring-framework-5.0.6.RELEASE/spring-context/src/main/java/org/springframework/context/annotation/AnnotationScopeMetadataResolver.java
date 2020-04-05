@@ -73,7 +73,11 @@ public class AnnotationScopeMetadataResolver implements ScopeMetadataResolver {
 		this.scopeAnnotationType = scopeAnnotationType;
 	}
 
-
+	/**
+	 * 查看是不是配置了scope 如果没有。默认是单例
+	 * @param definition the target bean definition
+	 * @return
+	 */
 	@Override
 	public ScopeMetadata resolveScopeMetadata(BeanDefinition definition) {
 		ScopeMetadata metadata = new ScopeMetadata();
