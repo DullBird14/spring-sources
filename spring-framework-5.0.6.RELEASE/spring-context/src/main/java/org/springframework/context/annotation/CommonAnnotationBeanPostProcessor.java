@@ -516,7 +516,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 		Object resource;
 		Set<String> autowiredBeanNames;
 		String name = element.name;
-		//element.isDefaultName 即@Resource是否指定 beande名字名字，并且工厂不包含这个bean
+		//element.isDefaultName 即@Resource是否指定 bean的名字，并且工厂不包含这个bean
 		if (this.fallbackToDefaultTypeMatch && element.isDefaultName &&
 				factory instanceof AutowireCapableBeanFactory && !factory.containsBean(name)) {
 			autowiredBeanNames = new LinkedHashSet<>();
