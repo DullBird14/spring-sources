@@ -50,6 +50,7 @@ import org.springframework.core.io.ResourceLoader;
  * @see org.springframework.core.io.ResourceLoader
  * @see org.springframework.context.ApplicationContext
  * @see org.springframework.context.ResourceLoaderAware
+ * 资源匹配器接口
  */
 public interface ResourcePatternResolver extends ResourceLoader {
 
@@ -70,6 +71,7 @@ public interface ResourcePatternResolver extends ResourceLoader {
 	 * @param locationPattern the location pattern to resolve
 	 * @return the corresponding Resource objects
 	 * @throws IOException in case of I/O errors
+	 * 根据给定的模式匹配符合的资源，如果没有可能为空数组
 	 */
 	Resource[] getResources(String locationPattern) throws IOException;
 
