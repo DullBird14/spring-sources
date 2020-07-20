@@ -55,6 +55,7 @@ import org.springframework.validation.annotation.Validated;
  * @since 3.1
  * @see MethodValidationInterceptor
  * @see javax.validation.executable.ExecutableValidator
+ * 处理调用方法的参数校验
  */
 @SuppressWarnings("serial")
 public class MethodValidationPostProcessor extends AbstractBeanFactoryAwareAdvisingPostProcessor
