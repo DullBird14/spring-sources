@@ -105,6 +105,7 @@ import org.springframework.util.StringUtils;
  * @see DefaultMessageCodesResolver
  * @see DefaultBindingErrorProcessor
  * @see org.springframework.context.MessageSource
+ * 将数据转换到对象中
  */
 public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
@@ -121,6 +122,7 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 	protected static final Log logger = LogFactory.getLog(DataBinder.class);
 
 	@Nullable
+	// 目标对象
 	private final Object target;
 
 	private final String objectName;
@@ -730,8 +732,11 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 	 * @see #applyPropertyValues
 	 */
 	protected void doBind(MutablePropertyValues mpvs) {
+		//检查允许的属性
 		checkAllowedFields(mpvs);
+		//检查必须的属性
 		checkRequiredFields(mpvs);
+		//应用属性
 		applyPropertyValues(mpvs);
 	}
 
@@ -836,6 +841,7 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 	protected void applyPropertyValues(MutablePropertyValues mpvs) {
 		try {
 			// Bind request parameters onto target object.
+			// 创建 BeanPropertyBindingResult: getPropertyAccessor() -> BeanPropertyBindingResult
 			getPropertyAccessor().setPropertyValues(mpvs, isIgnoreUnknownFields(), isIgnoreInvalidFields());
 		}
 		catch (PropertyBatchUpdateException ex) {

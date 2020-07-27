@@ -234,6 +234,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 
 	@Override
 	public void setPropertyValue(String propertyName, @Nullable Object value) throws BeansException {
+		// 处理嵌套的逻辑的方法
 		AbstractNestablePropertyAccessor nestedPa;
 		try {
 			nestedPa = getPropertyAccessorForPropertyPath(propertyName);
@@ -814,6 +815,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 			String nestedProperty = propertyPath.substring(0, pos);
 			String nestedPath = propertyPath.substring(pos + 1);
 			AbstractNestablePropertyAccessor nestedPa = getNestedPropertyAccessor(nestedProperty);
+			//此处是一个递归的操作
 			return nestedPa.getPropertyAccessorForPropertyPath(nestedPath);
 		}
 		else {
@@ -837,11 +839,11 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 		PropertyTokenHolder tokens = getPropertyNameTokens(nestedProperty);
 		String canonicalName = tokens.canonicalName;
 		Object value = getPropertyValue(tokens);
-		if (value == null || (value instanceof Optional && !((Optional) value).isPresent())) {
+		if (value == null || (value instanceof Optional && !((Optional) value).isPresent())) {//如果不存在
 			if (isAutoGrowNestedPaths()) {
-				value = setDefaultValue(tokens);
+				value = setDefaultValue(tokens);//创建
 			}
-			else {
+			else {//否则报错
 				throw new NullValueInNestedPathException(getRootClass(), this.nestedPath + canonicalName);
 			}
 		}

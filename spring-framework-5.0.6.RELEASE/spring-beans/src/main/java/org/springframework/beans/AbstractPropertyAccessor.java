@@ -85,10 +85,11 @@ public abstract class AbstractPropertyAccessor extends TypeConverterSupport impl
 	@Override
 	public void setPropertyValues(PropertyValues pvs, boolean ignoreUnknown, boolean ignoreInvalid)
 			throws BeansException {
-
+		//属性设置的核心方法
 		List<PropertyAccessException> propertyAccessExceptions = null;
 		List<PropertyValue> propertyValues = (pvs instanceof MutablePropertyValues ?
 				((MutablePropertyValues) pvs).getPropertyValueList() : Arrays.asList(pvs.getPropertyValues()));
+		// 遍历每个属性处理
 		for (PropertyValue pv : propertyValues) {
 			try {
 				// This method may throw any BeansException, which won't be caught
@@ -98,12 +99,14 @@ public abstract class AbstractPropertyAccessor extends TypeConverterSupport impl
 			}
 			catch (NotWritablePropertyException ex) {
 				if (!ignoreUnknown) {
+					//如果 不是忽略未知就报错
 					throw ex;
 				}
 				// Otherwise, just ignore it and continue...
 			}
 			catch (NullValueInNestedPathException ex) {
 				if (!ignoreInvalid) {
+					//如果 不是忽略null就报错
 					throw ex;
 				}
 				// Otherwise, just ignore it and continue...
