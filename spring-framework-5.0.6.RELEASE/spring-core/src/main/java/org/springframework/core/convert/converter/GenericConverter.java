@@ -52,6 +52,7 @@ public interface GenericConverter {
 	 * <p>Each entry is a convertible source-to-target type pair.
 	 * <p>For {@link ConditionalConverter conditional converters} this method may return
 	 * {@code null} to indicate all source-to-target pairs should be considered.
+	 * 支持转换的类型对
 	 */
 	@Nullable
 	Set<ConvertiblePair> getConvertibleTypes();
@@ -71,9 +72,9 @@ public interface GenericConverter {
 	 * Holder for a source-to-target class pair.
 	 */
 	final class ConvertiblePair {
-
+		/**源数据的类型**/
 		private final Class<?> sourceType;
-
+		/**要转换成的目标类型**/
 		private final Class<?> targetType;
 
 		/**

@@ -34,7 +34,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  *
  * <p>Mainly intended for usage within the framework, resolving method
  * parameter types even when they are declared generically.
- *
+ * 泛型辅助类
  * @author Juergen Hoeller
  * @author Rob Harrop
  * @author Sam Brannen
@@ -83,6 +83,7 @@ public abstract class GenericTypeResolver {
 	 * @param genericIfc the generic interface or superclass to resolve the type argument from
 	 * @return the resolved parameter type of the method return type, or {@code null}
 	 * if not resolvable or if the single argument is of type {@link WildcardType}.
+	 *
 	 */
 	@Nullable
 	public static Class<?> resolveReturnTypeArgument(Method method, Class<?> genericIfc) {

@@ -1270,7 +1270,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 			//包装成BeanWrapper
 			BeanWrapper bw = new BeanWrapperImpl(beanInstance);
-			//todo
+			//todo 初始化 beanWrapper 比如放入 ConversionService
 			initBeanWrapper(bw);
 			return bw;
 		}
