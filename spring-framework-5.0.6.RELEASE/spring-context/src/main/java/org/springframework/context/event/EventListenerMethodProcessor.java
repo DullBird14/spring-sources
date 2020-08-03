@@ -140,6 +140,7 @@ public class EventListenerMethodProcessor implements SmartInitializingSingleton,
 		if (!this.nonAnnotatedClasses.contains(targetType)) {
 			Map<Method, EventListener> annotatedMethods = null;
 			try {
+				//找到 targetType 类中的 所有的 @EventListener  方法
 				annotatedMethods = MethodIntrospector.selectMethods(targetType,
 						(MethodIntrospector.MetadataLookup<EventListener>) method ->
 								AnnotatedElementUtils.findMergedAnnotation(method, EventListener.class));
@@ -160,6 +161,7 @@ public class EventListenerMethodProcessor implements SmartInitializingSingleton,
 				// Non-empty set of methods
 				ConfigurableApplicationContext context = getApplicationContext();
 				for (Method method : annotatedMethods.keySet()) {
+					// 把 method 构造为 ApplicationListener 对象
 					for (EventListenerFactory factory : factories) {
 						if (factory.supportsMethod(method)) {
 							Method methodToUse = AopUtils.selectInvocableMethod(method, context.getType(beanName));

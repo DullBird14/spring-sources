@@ -23,7 +23,6 @@ public class ResolvableTypeDemo {
 		System.out.println(resolvableType.getGeneric(0));
 		System.out.println(resolvableType.getSuperType());
 		System.out.println(resolvableType.getSuperType().getGeneric(0));
-
 	}
 
 }
