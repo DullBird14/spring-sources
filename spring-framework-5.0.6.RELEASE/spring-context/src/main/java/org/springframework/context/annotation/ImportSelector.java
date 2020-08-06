@@ -44,12 +44,14 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see Import
  * @see ImportBeanDefinitionRegistrar
  * @see Configuration
+ * 选择加载对应的 Configuration 全路径
  */
 public interface ImportSelector {
 
 	/**
 	 * Select and return the names of which class(es) should be imported based on
 	 * the {@link AnnotationMetadata} of the importing @{@link Configuration} class.
+	 * 选择并且返回全路径
 	 */
 	String[] selectImports(AnnotationMetadata importingClassMetadata);
 
