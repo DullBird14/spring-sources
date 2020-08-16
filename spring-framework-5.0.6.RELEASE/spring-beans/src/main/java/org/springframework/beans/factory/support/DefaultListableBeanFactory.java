@@ -165,11 +165,16 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap<>(64);
 
 	/** List of bean definition names, in registration order */
+	/**
+	 * registerBeanDefinition(String, BeanDefinition) 和 registerSingleton(String, Object)
+	 * 都会添加到这个里面
+	 */
 	private volatile List<String> beanDefinitionNames = new ArrayList<>(256);
 
 	/**
 	 * List of names of manually registered singletons, in registration order
 	 * 存储注册的单例的名字
+	 * registerSingleton 才会添加到这个里面
 	 */
 	private volatile Set<String> manualSingletonNames = new LinkedHashSet<>(16);
 
@@ -390,6 +395,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@Override
 	public String[] getBeanNamesForType(@Nullable Class<?> type, boolean includeNonSingletons, boolean allowEagerInit) {
 		if (!isConfigurationFrozen() || type == null || !allowEagerInit) {
+			// 如果配置未冻结，或者类型为null，或 不允许提前初始化，
+			// 那么使用 ResolvableType.forRawClass(type) 查找，
+			// todo FactoryBean 的类型判断
 			return doGetBeanNamesForType(ResolvableType.forRawClass(type), includeNonSingletons, allowEagerInit);
 		}
 		Map<Class<?>, String[]> cache =
@@ -405,11 +413,19 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return resolvedBeanNames;
 	}
 
+	/**
+	 * 通过类型查询 bean 的名称
+	 * @param type
+	 * @param includeNonSingletons
+	 * @param allowEagerInit
+	 * @return
+	 */
 	private String[] doGetBeanNamesForType(ResolvableType type, boolean includeNonSingletons, boolean allowEagerInit) {
 		List<String> result = new ArrayList<>();
 
 		// Check all bean definitions.
 		for (String beanName : this.beanDefinitionNames) {
+			// 遍历所有的 beanDefinitions
 			// Only consider bean as eligible if the bean name
 			// is not defined as alias for some other bean.
 			if (!isAlias(beanName)) {
@@ -462,6 +478,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		// Check manually registered singletons too.
+		// registerSingleton(String, Object) 外部注册的单例
 		for (String beanName : this.manualSingletonNames) {
 			try {
 				// In case of FactoryBean, match object created by FactoryBean.

@@ -122,15 +122,21 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
+		// 如果之前有 beanFactory 那么清除 bean 并且关闭
 		if (hasBeanFactory()) {
 			destroyBeans();
 			closeBeanFactory();
 		}
 		try {
+			// 创建 DefaultListableBeanFactory
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
+			// 设置一个 序列化id
 			beanFactory.setSerializationId(getId());
+			// 自定义设置 beanFactory 的 是否允许 beanDefinition 覆盖
 			customizeBeanFactory(beanFactory);
+			// todo 注册 beanDefinition 不同的 context 有不同的方式，比如注解,xml
 			loadBeanDefinitions(beanFactory);
+			// todo 此处没太明白 加锁 的用意
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;
 			}

@@ -105,6 +105,7 @@ public interface Environment extends PropertyResolver {
 	 * or if any profile is {@code null}, empty or whitespace-only
 	 * @see #getActiveProfiles
 	 * @see #getDefaultProfiles
+	 * 判断 profile 是否 活跃，是或的关系
 	 */
 	boolean acceptsProfiles(String... profiles);
 
