@@ -207,19 +207,19 @@ configure(subprojects - project(":spring-build-src")) { subproject ->
 	}
 
 	javadoc {
-		description = "Generates project-level javadoc for use in -javadoc jar"
-
-		options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
-		options.author = true
-		options.header = project.name
-		options.use = true
-		options.links(project.ext.javadocLinks)
-		options.addStringOption('Xdoclint:none', '-quiet')
-
-		// Suppress warnings due to cross-module @see and @link references.
-		// Note that global 'api' task does display all warnings.
-		logging.captureStandardError LogLevel.INFO
-		logging.captureStandardOutput LogLevel.INFO  // suppress "## warnings" message
+//		description = "Generates project-level javadoc for use in -javadoc jar"
+//
+//		options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+//		options.author = true
+//		options.header = project.name
+//		options.use = true
+//		options.links(project.ext.javadocLinks)
+//		options.addStringOption('Xdoclint:none', '-quiet')
+//
+//		// Suppress warnings due to cross-module @see and @link references.
+//		// Note that global 'api' task does display all warnings.
+//		logging.captureStandardError LogLevel.INFO
+//		logging.captureStandardErrorardOutput LogLevel.INFO  // suppress "## warnings" message
 	}
 
 	task sourcesJar(type: Jar, dependsOn: classes) {
@@ -235,8 +235,8 @@ configure(subprojects - project(":spring-build-src")) { subproject ->
 	}
 
 	artifacts {
-		archives sourcesJar
-		archives javadocJar
+//		archives sourcesJar
+//		archives javadocJar
 	}
 }
 
@@ -281,9 +281,9 @@ configure(rootProject) {
 	}
 
 	artifacts {
-		archives docsZip
-		archives schemaZip
-		archives distZip
+//		archives docsZip
+//		archives schemaZip
+//		archives distZip
 	}
 
 	task wrapper(type: Wrapper) {
