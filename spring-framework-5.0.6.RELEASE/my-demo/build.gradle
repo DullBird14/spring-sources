@@ -15,6 +15,7 @@ ext {
 dependencies {
     compile(project(":spring-context"))
     compile(project(":spring-instrument"))
+    compile(project(":spring-aop"))
 
     //lombok
 //    compileOnly "org.projectlombok:lombok:${lombokVersion}"
