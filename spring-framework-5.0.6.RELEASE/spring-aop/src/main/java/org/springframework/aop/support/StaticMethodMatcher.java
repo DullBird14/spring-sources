@@ -24,6 +24,7 @@ import org.springframework.lang.Nullable;
 /**
  * Convenient abstract superclass for static method matchers, which don't care
  * about arguments at runtime.
+ * 静态的方法匹配
  */
 public abstract class StaticMethodMatcher implements MethodMatcher {
 

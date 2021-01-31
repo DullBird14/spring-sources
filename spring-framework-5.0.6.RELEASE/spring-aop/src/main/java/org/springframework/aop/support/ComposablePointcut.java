@@ -37,7 +37,7 @@ import org.springframework.util.Assert;
  * @since 11.11.2003
  * @see Pointcuts
  */
-public class ComposablePointcut implements Pointcut, Serializable {
+public class  ComposablePointcut implements Pointcut, Serializable {
 
 	/** use serialVersionUID from Spring 1.2 for interoperability */
 	private static final long serialVersionUID = -2743223737633663832L;
@@ -125,6 +125,7 @@ public class ComposablePointcut implements Pointcut, Serializable {
 	 * Apply a union with the given MethodMatcher.
 	 * @param other the MethodMatcher to apply a union with
 	 * @return this composable pointcut (for call chaining)
+	 * 或的关系
 	 */
 	public ComposablePointcut union(MethodMatcher other) {
 		this.methodMatcher = MethodMatchers.union(this.methodMatcher, other);
@@ -135,6 +136,7 @@ public class ComposablePointcut implements Pointcut, Serializable {
 	 * Apply an intersection with the given MethodMatcher.
 	 * @param other the MethodMatcher to apply an intersection with
 	 * @return this composable pointcut (for call chaining)
+	 * 且的关系
 	 */
 	public ComposablePointcut intersection(MethodMatcher other) {
 		this.methodMatcher = MethodMatchers.intersection(this.methodMatcher, other);

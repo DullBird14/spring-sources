@@ -45,6 +45,7 @@ public interface Joinpoint {
 	 * on the actual joinpoint type (see the children interfaces).
 	 * @return see the children interfaces' proceed definition
 	 * @throws Throwable if the joinpoint throws an exception
+	 * 方法执行
 	 */
 	Object proceed() throws Throwable;
 
@@ -52,6 +53,7 @@ public interface Joinpoint {
 	 * Return the object that holds the current joinpoint's static part.
 	 * <p>For instance, the target object for an invocation.
 	 * @return the object (can be null if the accessible object is static)
+	 * 目标对象
 	 */
 	Object getThis();
 
@@ -59,6 +61,7 @@ public interface Joinpoint {
 	 * Return the static part of this joinpoint.
 	 * <p>The static part is an accessible object on which a chain of
 	 * interceptors are installed.
+	 * 方法
 	 */
 	AccessibleObject getStaticPart();
 

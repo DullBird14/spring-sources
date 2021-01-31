@@ -31,6 +31,7 @@ public interface Invocation extends Joinpoint {
 	 * It is possible to change element values within this
 	 * array to change the arguments.
 	 * @return the argument of the invocation
+	 * 上下文中的参数
 	 */
 	Object[] getArguments();
 

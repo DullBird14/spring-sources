@@ -58,6 +58,7 @@ public interface MethodMatcher {
 	 * @param targetClass the target class (may be {@code null}, in which case
 	 * the candidate class must be taken to be the method's declaring class)
 	 * @return whether or not this method matches statically
+	 * 判断方法和目标类是否匹配
 	 */
 	boolean matches(Method method, @Nullable Class<?> targetClass);
 
@@ -70,6 +71,7 @@ public interface MethodMatcher {
 	 * @return whether or not a runtime match via the 3-arg
 	 * {@link #matches(java.lang.reflect.Method, Class, Object[])} method
 	 * is required if static matching passed
+	 * 是不是动态创建的方法
 	 */
 	boolean isRuntime();
 
@@ -87,6 +89,7 @@ public interface MethodMatcher {
 	 * @param args arguments to the method
 	 * @return whether there's a runtime match
 	 * @see MethodMatcher#matches(Method, Class)
+	 * 根据参数匹配
 	 */
 	boolean matches(Method method, @Nullable Class<?> targetClass, Object... args);
 

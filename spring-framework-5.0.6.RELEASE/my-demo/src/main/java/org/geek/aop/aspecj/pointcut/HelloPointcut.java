@@ -1,4 +1,4 @@
-package org.geek.aop.aspecj.config;
+package org.geek.aop.aspecj.pointcut;
 
 import org.geek.aop.aspecj.origin.HelloInterface;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;
