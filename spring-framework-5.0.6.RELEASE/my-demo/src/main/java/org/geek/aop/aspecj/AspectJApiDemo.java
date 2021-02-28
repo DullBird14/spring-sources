@@ -5,13 +5,29 @@ import org.geek.aop.aspecj.pointcut.HelloPointcut;
 import org.geek.aop.aspecj.origin.DefaultHelloImpl;
 import org.geek.aop.aspecj.origin.HelloInterface;
 import org.geek.aop.aspecj.pointcut.MyPointcut;
+import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 
+import java.lang.reflect.Method;
+
 public class AspectJApiDemo {
 	public static void main(String[] args) {
-		test2();
+		test3();
+//		test2();
 //		test1();
+	}
+
+	private static void test3() {
+		DefaultHelloImpl defaultHello = new DefaultHelloImpl();
+		//proxy代理
+		ProxyFactory proxyFactory = new ProxyFactory(defaultHello);
+		proxyFactory.addAdvice(new MethodBeforeAdvice() {
+			@Override
+			public void before(Method method, Object[] args, Object target) throws Throwable {
+
+			}
+		});
 	}
 
 	private static void test2() {

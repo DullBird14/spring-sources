@@ -256,6 +256,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	@Override
 	public void addAdvisor(int pos, Advisor advisor) throws AopConfigException {
 		if (advisor instanceof IntroductionAdvisor) {
+			// 如果是 IntroductionAdvisor 会从中获取接口
 			validateIntroductionAdvisor((IntroductionAdvisor) advisor);
 		}
 		addAdvisorInternal(pos, advisor);
@@ -349,6 +350,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 		advisor.validateInterfaces();
 		// If the advisor passed validation, we can make the change.
 		Class<?>[] ifcs = advisor.getInterfaces();
+		// 如果advisor中设置了接口。获取并添加到interfaces
 		for (Class<?> ifc : ifcs) {
 			addInterface(ifc);
 		}
