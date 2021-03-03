@@ -99,6 +99,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	/**
 	 * Array updated on changes to the advisors list, which is easier
 	 * to manipulate internally.
+	 * 和上面的 advisors 重复。空间换时间
 	 */
 	private Advisor[] advisorArray = new Advisor[0];
 
@@ -365,6 +366,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 			throw new IllegalArgumentException(
 					"Illegal position " + pos + " in advisor list with size " + this.advisors.size());
 		}
+		// 添加 list并且更新数组
 		this.advisors.add(pos, advisor);
 		updateAdvisorArray();
 		adviceChanged();
@@ -484,6 +486,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 		if (cached == null) {
 			cached = this.advisorChainFactory.getInterceptorsAndDynamicInterceptionAdvice(
 					this, method, targetClass);
+			//做一个方法级别的缓存
 			this.methodCache.put(cacheKey, cached);
 		}
 		return cached;
