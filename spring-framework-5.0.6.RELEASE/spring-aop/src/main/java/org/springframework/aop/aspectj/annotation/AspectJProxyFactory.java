@@ -89,8 +89,11 @@ public class AspectJProxyFactory extends ProxyCreatorSupport {
 	 * @param aspectInstance the AspectJ aspect instance
 	 */
 	public void addAspect(Object aspectInstance) {
+		// 添加Aspect
 		Class<?> aspectClass = aspectInstance.getClass();
+		// 获取类的名称
 		String aspectName = aspectClass.getName();
+		// 解析类内容为 AspectMetadata
 		AspectMetadata am = createAspectMetadata(aspectClass, aspectName);
 		if (am.getAjType().getPerClause().getKind() != PerClauseKind.SINGLETON) {
 			throw new IllegalArgumentException(
@@ -118,12 +121,16 @@ public class AspectJProxyFactory extends ProxyCreatorSupport {
 	 * @see AspectJProxyUtils#makeAdvisorChainAspectJCapableIfNecessary(List)
 	 */
 	private void addAdvisorsFromAspectInstanceFactory(MetadataAwareAspectInstanceFactory instanceFactory) {
+		// 所有的advisors
 		List<Advisor> advisors = this.aspectFactory.getAdvisors(instanceFactory);
 		Class<?> targetClass = getTargetClass();
 		Assert.state(targetClass != null, "Unresolvable target class");
+		// 获取目标类匹配的 advisors todo 待看细节的逻辑
 		advisors = AopUtils.findAdvisorsThatCanApply(advisors, targetClass);
 		AspectJProxyUtils.makeAdvisorChainAspectJCapableIfNecessary(advisors);
+		//排序
 		AnnotationAwareOrderComparator.sort(advisors);
+		// 添加到配置的  advisors
 		addAdvisors(advisors);
 	}
 

@@ -106,6 +106,7 @@ public class AspectMetadata implements Serializable {
 				return;
 			case PERTARGET:
 			case PERTHIS:
+				// 设置了 AspectJExpressionPointcut
 				AspectJExpressionPointcut ajexp = new AspectJExpressionPointcut();
 				ajexp.setLocation(aspectClass.getName());
 				ajexp.setExpression(findPerClause(aspectClass));

@@ -55,6 +55,9 @@ public @interface Import {
 
 	/**
 	 * {@link Configuration}, {@link ImportSelector}, {@link ImportBeanDefinitionRegistrar}
+	 * 1.Import可以提前导入Configuration.class
+	 * 2. ImportSelector
+	 * 3. ImportBeanDefinitionRegistrar
 	 * or regular component classes to import.
 	 */
 	Class<?>[] value();

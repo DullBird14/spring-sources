@@ -499,7 +499,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		// Check manually registered singletons.
 		Object beanInstance = getSingleton(beanName, false);
+		//尝试获取实例
 		if (beanInstance != null && beanInstance.getClass() != NullBean.class) {
+			// 获取到的情况
 			if (beanInstance instanceof FactoryBean) {
 				if (!BeanFactoryUtils.isFactoryDereference(name)) {
 					Class<?> type = getTypeForFactoryBean((FactoryBean<?>) beanInstance);
@@ -529,6 +531,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			return false;
 		}
 		else if (containsSingleton(beanName) && !containsBeanDefinition(beanName)) {
+			//todo 不知道什么情况会在到这里 。就是单例池中有。但是BeanDefinition中没有/是一些托管的对象
 			// null instance registered
 			return false;
 		}
@@ -568,7 +571,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		// Check bean class whether we're dealing with a FactoryBean.
 		if (FactoryBean.class.isAssignableFrom(beanType)) {
+			// 处理 FactoryBean
 			if (!BeanFactoryUtils.isFactoryDereference(name) && beanInstance == null) {
+				// 要查看这个FactoryBean 创建的是什么类型的bean，触发 factoryBean 的创建有的版本这个时候不会直接创建
 				// If it's a FactoryBean, we want to look at what it creates, not the factory class.
 				beanType = getTypeForFactoryBean(beanName, mbd);
 				if (beanType == null) {

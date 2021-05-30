@@ -124,6 +124,7 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 	/**
 	 * Find and return the first AspectJ annotation on the given method
 	 * (there <i>should</i> only be one anyway...)
+	 * 获取aspectJ的注解，获取一个就返回
 	 */
 	@SuppressWarnings("unchecked")
 	@Nullable
@@ -213,6 +214,7 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 		}
 
 		private String resolveExpression(A annotation) throws Exception {
+			// 获取注解中  "value", "pointcut" 的方法值
 			for (String methodName : EXPRESSION_PROPERTIES) {
 				Method method;
 				try {
